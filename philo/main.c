@@ -6,7 +6,7 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 17:28:08 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/09/08 17:42:36 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/09/15 19:40:23 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,26 +60,67 @@ void chrono_stop(t_timeval *t)
 	free(t);
 }
 
+int	ft_atoi(const char *str)
+{
+	int	result;
+	int	sign;
+
+	result = 0;
+	sign = 1;
+	while (*str == ' ' || (*str >= 9 && *str <= 13))
+		str++;
+	if (*str == '-' || *str == '+')
+	{
+		if (*str == '-')
+			sign = -1;
+		str++;
+	}
+	while (*str >= '0' && *str <= '9')
+	{
+		result = result * 10 + (*str - '0');
+		str++;
+	}
+	return (sign * result);
+}
+
+int	valid_args(int argc, char **argv)
+{
+	int	n_phils;
+
+	n_phils = ft_atoi(argv[1]);
+	if (argc < 5)
+	{
+		printf("Usage: ./philo n_phils t_2_die t_2_eat t_2_sleep [n_meals]\n");
+		return (0);
+	}
+	if (n_phils < 1 || n_phils > 200)
+	{
+		printf("Number of philosophers must be in a range of 1-200\n");
+		return (0);
+	}
+	return (1);
+}
+
 int	main(int argc, char **argv)
 {
 	t_timeval	*t;
 	double		time_lap;
-	(void)argv;
-	if (argc != 5)
-	{
-		printf("Error\n");
-		exit(1);
-	}
+
+	if (!valid_args(argc, argv))
+		return (1);
 	t = chrono_start();
-	for (int i = 0; i <= 100; i++)
-	{
-		printf("Hola %d\n", i);
-	}
 	time_lap = chrono_lap(t);
 	printf("Time lap: %f\n", time_lap);
-	for (int i = 100; i <= 200; i++)
-	{
-		printf("Hola %d\n", i);
-	}
 	chrono_stop(t);
 }
+
+/* int	main(int argc, char **argv)
+{
+	if (!valid_args(argc, argv))
+		return (1);
+	init_config(argv);             // Inicializa structs, mutex, etc.
+	init_philosophers();          // Crea y lanza los hilos
+	start_simulation();           // Controla el tiempo y acciones
+	cleanup_and_exit();           // Libera recursos
+	return (0);
+} */
