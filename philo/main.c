@@ -6,12 +6,16 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 17:28:08 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/09/15 20:37:41 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/09/15 20:48:24 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+void	init_config(char **argv)
+{
+	
+}
 
 int	main(int argc, char **argv)
 {

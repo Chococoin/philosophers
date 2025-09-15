@@ -6,7 +6,7 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 20:10:08 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/09/15 20:37:48 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/09/15 20:43:26 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	ft_atoi(const char *str)
 	}
 	return (sign * result);
 }
+
 t_timeval	*chrono_start(void)
 {
 	t_timeval	*new_t;
@@ -48,6 +49,7 @@ t_timeval	*chrono_start(void)
 	gettimeofday(new_t->start, NULL);
 	return (new_t);
 }
+
 double	chrono_lap(t_timeval *t)
 {
 	long	secs;
