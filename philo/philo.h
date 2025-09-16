@@ -6,7 +6,7 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 14:50:21 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/09/15 20:44:21 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/09/16 04:54:27 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,16 @@
 
 typedef struct s_config
 {
-	int	*time_to_die;
-	int	*time_to_eat;
-	int	*time_to_sleep;
+	int	num_of_philosophers;
+	int	time_to_die;
+	int	time_to_eat;
+	int	time_to_sleep;
+	int	min_num_of_meals;
 }	t_config;
 
 typedef struct s_philo
 {
-	int			*id;
+	int			id;
 	pthread_t	thread;
 	int			left_fork;
 	int			right_fork;
