@@ -6,7 +6,7 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 17:28:08 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/09/16 14:28:27 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/09/16 14:42:15 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	init_config(t_config *config, char **argv)
 		config->min_num_of_meals = ft_atoi(argv[5]);
 }
 
-void	*life_of_a_philosopher(void *args)
+void	*philosophers_life(void *args)
 {
 	t_philo	*philo;
 
@@ -40,7 +40,7 @@ void	init_philosophers(t_config *config, t_philo *philo)
 	{
 		philo[i].id = i + 1;
 		philo[i].config = config;
-		pthread_create(&philo[i].thread, NULL, life_of_a_philosopher, &philo[i]);
+		pthread_create(&philo[i].thread, NULL, philosophers_life, &philo[i]);
 		i++;
 	}
 	return ;
@@ -50,13 +50,14 @@ void	start_dinner(t_timeval *t, t_config *config, t_philo *philo)
 {
 	int	i;
 
+	t = chrono_start();
+	config->t = t;
 	i = 0;
 	while (i < config->num_of_philosophers)
 	{
 		pthread_join(philo[i].thread, NULL);
 		i++;
 	}
-	t = chrono_start();
 	return ;
 }
 
@@ -72,8 +73,6 @@ int	main(int argc, char **argv)
 	init_config(&config, argv);
 	init_philosophers(&config, philosopher);
 	start_dinner(t, &config, philosopher);
-	// t = chrono_start();
-
 	printf("Time lap: %f\n", time_lap);
 	chrono_stop(t);
 }

@@ -6,7 +6,7 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 14:50:21 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/09/16 04:54:27 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/09/16 14:37:51 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct s_config
 	int	time_to_eat;
 	int	time_to_sleep;
 	int	min_num_of_meals;
+	t_timeval t;
 }	t_config;
 
 typedef struct s_philo
