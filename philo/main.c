@@ -6,7 +6,7 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 17:28:08 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/09/16 14:42:15 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/09/16 15:25:38 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,24 +46,23 @@ void	init_philosophers(t_config *config, t_philo *philo)
 	return ;
 }
 
-void	start_dinner(t_timeval *t, t_config *config, t_philo *philo)
+void	start_dinner(t_config *config, t_philo *philo)
 {
 	int	i;
 
-	t = chrono_start();
-	config->t = t;
 	i = 0;
-	while (i < config->num_of_philosophers)
+	config->ok = 1;
+	while (i < config->num_of_philosophers - 1)
 	{
 		pthread_join(philo[i].thread, NULL);
 		i++;
 	}
+	config->t = chrono_start();
 	return ;
 }
 
 int	main(int argc, char **argv)
 {
-	t_timeval	*t;
 	double		time_lap;
 	t_config	config;
 	t_philo		philosopher[200];
@@ -72,9 +71,9 @@ int	main(int argc, char **argv)
 		return (1);
 	init_config(&config, argv);
 	init_philosophers(&config, philosopher);
-	start_dinner(t, &config, philosopher);
+	start_dinner(&config, philosopher);
 	printf("Time lap: %f\n", time_lap);
-	chrono_stop(t);
+	chrono_stop(config.t);
 }
 
 /* int	main(int argc, char **argv)

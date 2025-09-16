@@ -6,7 +6,7 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 14:50:21 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/09/16 14:37:51 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/09/16 15:26:53 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,21 @@
 # include <sys/time.h>
 # include <stdlib.h>
 
+typedef struct s_timeval
+{
+	struct timeval	*start;
+	struct timeval	*end;
+}	t_timeval;
+
 typedef struct s_config
 {
-	int	num_of_philosophers;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int	min_num_of_meals;
-	t_timeval t;
+	int			num_of_philosophers;
+	int			time_to_die;
+	int			time_to_eat;
+	int			time_to_sleep;
+	int			min_num_of_meals;
+	int			ok;
+	t_timeval	*t;
 }	t_config;
 
 typedef struct s_philo
@@ -36,12 +43,6 @@ typedef struct s_philo
 	int			right_fork;
 	t_config	*config;
 }	t_philo;
-
-typedef struct s_timeval
-{
-	struct timeval	*start;
-	struct timeval	*end;
-}	t_timeval;
 
 int			ft_atoi(const char *str);
 t_timeval	*chrono_start(void);

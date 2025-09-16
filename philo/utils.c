@@ -6,7 +6,7 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 20:10:08 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/09/15 20:43:26 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/09/16 15:14:46 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_timeval	*chrono_start(void)
 	new_t->start = malloc(sizeof(struct timeval));
 	new_t->end = malloc(sizeof(struct timeval));
 	if (!new_t->start || !new_t->end)
-		exit(1);
+		return (NULL);
 	gettimeofday(new_t->start, NULL);
 	return (new_t);
 }
