@@ -6,7 +6,7 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 17:28:08 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/09/18 14:13:32 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/09/18 14:47:58 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ void	start_dinner(t_config *config, t_philo *philo)
 	int	i;
 
 	i = 0;
-	config->t = chrono_start();
 	while (i < config->num_of_philosophers)
 	{
 		pthread_join(philo[i].thread, NULL);
@@ -100,6 +99,7 @@ int	main(int argc, char **argv)
 
 	if (!valid_args(argc, argv))
 		return (1);
+	config.t = chrono_start();
 	init_config(&config, argv);
 	init_philosophers(&config, philosopher);
 	start_dinner(&config, philosopher);
