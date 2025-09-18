@@ -6,7 +6,7 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 20:10:08 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/09/16 15:14:46 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/09/18 14:12:25 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,11 @@ int	ft_atoi(const char *str)
 	return (sign * result);
 }
 
-t_timeval	*chrono_start(void)
+t_timeval	chrono_start(void)
 {
-	t_timeval	*new_t;
-
-	new_t = malloc(sizeof(t_timeval));
-	if (!new_t)
-		return (NULL);
-	new_t->start = malloc(sizeof(struct timeval));
-	new_t->end = malloc(sizeof(struct timeval));
-	if (!new_t->start || !new_t->end)
-		return (NULL);
-	gettimeofday(new_t->start, NULL);
-	return (new_t);
+	t_timeval	t;
+	gettimeofday(&t.start, NULL);
+	return (t);
 }
 
 double	chrono_lap(t_timeval *t)
@@ -56,9 +48,9 @@ double	chrono_lap(t_timeval *t)
 	long	microsecs;
 	double	time_lap;
 
-	gettimeofday(t->end, NULL);
-	secs = t->end->tv_sec - t->start->tv_sec;
-	microsecs = t->end->tv_usec - t->start->tv_usec;
+	gettimeofday(&t->end, NULL);
+	secs = t->end.tv_sec - t->start.tv_sec;
+	microsecs = t->end.tv_usec - t->start.tv_usec;
 	if (microsecs < 0)
 	{
 		secs -= 1;
@@ -74,9 +66,9 @@ void	chrono_stop(t_timeval *t)
 	long	microsecs;
 	double	total_time;
 
-	gettimeofday(t->end, NULL);
-	secs = t->end->tv_sec - t->start->tv_sec;
-	microsecs = t->end->tv_usec - t->start->tv_usec;
+	gettimeofday(&t->end, NULL);
+	secs = t->end.tv_sec - t->start.tv_sec;
+	microsecs = t->end.tv_usec - t->start.tv_usec;
 	if (microsecs < 0)
 	{
 		secs -= 1;
@@ -84,11 +76,6 @@ void	chrono_stop(t_timeval *t)
 	}
 	total_time = secs + microsecs * 1e-6;
 	printf("Tiempo de ejecución: %f segundos\n", total_time);
-	printf("Micro: %ld\n", microsecs);
-	printf("Secs: %ld\n", secs);
-	free(t->end);
-	free(t->start);
-	free(t);
 }
 
 int	valid_args(int argc, char **argv)
@@ -107,4 +94,21 @@ int	valid_args(int argc, char **argv)
 		return (0);
 	}
 	return (1);
+}
+int	try_eat(t_philo *philo)
+{
+	if (pthread_mutex_trylock(&philo->config->forks[philo->left_fork]) == 0)
+	{
+		printf("%d has taken a fork\n", philo->id);
+		if (pthread_mutex_trylock(&philo->config->forks[philo->right_fork]) == 0)
+		{
+			printf("%d has taken a fork\n", philo->id);
+			pthread_mutex_unlock(&philo->config->forks[philo->right_fork]);
+			pthread_mutex_unlock(&philo->config->forks[philo->left_fork]);
+			return (1);
+		}
+		else
+			pthread_mutex_unlock(&philo->config->forks[philo->left_fork]);
+	}
+	return (0);
 }

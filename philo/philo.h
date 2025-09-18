@@ -6,7 +6,7 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 14:50:21 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/09/16 15:26:53 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/09/18 14:12:41 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,12 @@
 # include <pthread.h>
 # include <sys/time.h>
 # include <stdlib.h>
+# include <unistd.h>
 
 typedef struct s_timeval
 {
-	struct timeval	*start;
-	struct timeval	*end;
+	struct timeval	start;
+	struct timeval	end;
 }	t_timeval;
 
 typedef struct s_config
@@ -32,7 +33,8 @@ typedef struct s_config
 	int			time_to_sleep;
 	int			min_num_of_meals;
 	int			ok;
-	t_timeval	*t;
+	t_timeval	t;
+	pthread_mutex_t forks[200];
 }	t_config;
 
 typedef struct s_philo
@@ -41,13 +43,15 @@ typedef struct s_philo
 	pthread_t	thread;
 	int			left_fork;
 	int			right_fork;
+	int			last_meal;
 	t_config	*config;
 }	t_philo;
 
 int			ft_atoi(const char *str);
-t_timeval	*chrono_start(void);
+t_timeval	chrono_start(void);
 double		chrono_lap(t_timeval *t);
 void		chrono_stop(t_timeval *t);
 int			valid_args(int argc, char **argv);
+int			try_eat(t_philo *philo);
 
 #endif
