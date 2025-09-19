@@ -6,7 +6,7 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 14:50:21 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/09/18 14:32:15 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/09/19 12:57:45 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_config
 	int			ok;
 	t_timeval	t;
 	pthread_mutex_t forks[200];
+	pthread_mutex_t print_lock;
 }	t_config;
 
 typedef struct s_philo
@@ -49,10 +50,11 @@ typedef struct s_philo
 
 int			ft_atoi(const char *str);
 t_timeval	chrono_start(void);
-long		chrono_lap(t_timeval *t);
+double		chrono_lap(t_timeval *t);
 void		chrono_stop(t_timeval *t);
 int			valid_args(int argc, char **argv);
 int			try_eat(t_philo *philo);
 void		print_action(t_philo *philo, char *action);
+int			is_alive(t_philo *philo);
 
 #endif

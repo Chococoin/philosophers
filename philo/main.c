@@ -6,7 +6,7 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 17:28:08 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/09/18 14:47:58 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/09/19 12:54:38 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,12 @@
 
 void	print_action(t_philo *philo, char *action)
 {
-	long	timestamp;
+	double	timestamp;
 
+	pthread_mutex_lock(&philo->config->print_lock);
 	timestamp = chrono_lap(&philo->config->t);
-	printf("%ld %d %s\n", timestamp, philo->id, action);
+	printf("%.3f %d %s\n", timestamp, philo->id, action);
+	pthread_mutex_unlock(&philo->config->print_lock);
 }
 
 void	init_config(t_config *config, char **argv)
@@ -38,6 +40,7 @@ void	init_config(t_config *config, char **argv)
 		pthread_mutex_init(&config->forks[i], NULL);
 		i++;
 	}
+	pthread_mutex_init(&config->print_lock, NULL);
 }
 
 void	*philosophers_life(void *args)
@@ -49,14 +52,13 @@ void	*philosophers_life(void *args)
 	{
 		if (try_eat(philo))
 		{
-			print_action(philo, "is eating");
 			usleep(philo->config->time_to_eat * 1000);
 			print_action(philo, "is sleeping");
 			usleep(philo->config->time_to_sleep * 1000);
 			print_action(philo, "is thinking");
 		}
 		else
-			usleep(50);
+			usleep(100);
 	}
 	pthread_mutex_lock(&philo->config->forks[philo->right_fork]);
 	return (NULL);
@@ -73,6 +75,7 @@ void	init_philosophers(t_config *config, t_philo *philo)
 		philo[i].config = config;
 		philo[i].left_fork = i;
 		philo[i].right_fork = (i + 1) % config->num_of_philosophers;
+		philo[i].last_meal = chrono_lap(&config->t);
 		pthread_create(&philo[i].thread, NULL, philosophers_life, &philo[i]);
 		i++;
 	}
@@ -109,7 +112,6 @@ int	main(int argc, char **argv)
 
 /* int	main(int argc, char **argv)
 {
-	start_simulation();           // Controla el tiempo y acciones
 	cleanup_and_exit();           // Libera recursos
 	return (0);
 } */

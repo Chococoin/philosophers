@@ -6,7 +6,7 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 20:10:08 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/09/18 14:44:15 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/09/19 13:02:19 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,32 +42,14 @@ t_timeval	chrono_start(void)
 	return (t);
 }
 
-// double	chrono_lap(t_timeval *t)
-// {
-// 	long	secs;
-// 	long	microsecs;
-// 	double	time_lap;
-
-// 	gettimeofday(&t->end, NULL);
-// 	secs = t->end.tv_sec - t->start.tv_sec;
-// 	microsecs = t->end.tv_usec - t->start.tv_usec;
-// 	if (microsecs < 0)
-// 	{
-// 		secs -= 1;
-// 		microsecs += 1000000;
-// 	}
-// 	time_lap = secs + microsecs * 1e-6;
-// 	return (time_lap);
-// }
-
-long	chrono_lap(t_timeval *t)
+double	chrono_lap(t_timeval *t)
 {
 	struct timeval	now;
-	long			ms;
+	double			ms;
 
 	gettimeofday(&now, NULL);
-	ms = (now.tv_sec - t->start.tv_sec) * 1000;
-	ms += (now.tv_usec - t->start.tv_usec) / 1000;
+	ms = (now.tv_sec - t->start.tv_sec) * 1000.0;
+	ms += (now.tv_usec - t->start.tv_usec) / 1000.0;
 	return (ms);
 }
 
@@ -86,7 +68,6 @@ void	chrono_stop(t_timeval *t)
 		microsecs += 1000000;
 	}
 	total_time = secs + microsecs * 1e-6;
-	printf("Tiempo de ejecución: %f segundos\n", total_time);
 }
 
 int	valid_args(int argc, char **argv)
@@ -106,14 +87,21 @@ int	valid_args(int argc, char **argv)
 	}
 	return (1);
 }
+
 int	try_eat(t_philo *philo)
 {
+	if (!is_alive(philo))
+	{
+		philo->config->ok = 0;
+		return (0);
+	}
 	if (pthread_mutex_trylock(&philo->config->forks[philo->left_fork]) == 0)
 	{
 		print_action(philo, "has taken a (l)fork");
 		if (pthread_mutex_trylock(&philo->config->forks[philo->right_fork]) == 0)
 		{
 			print_action(philo, "has taken a (r)fork");
+			print_action(philo, "is eating");
 			pthread_mutex_unlock(&philo->config->forks[philo->right_fork]);
 			pthread_mutex_unlock(&philo->config->forks[philo->left_fork]);
 			return (1);
@@ -122,4 +110,18 @@ int	try_eat(t_philo *philo)
 			pthread_mutex_unlock(&philo->config->forks[philo->left_fork]);
 	}
 	return (0);
+}
+
+int	is_alive(t_philo *philo)
+{
+	long	now;
+
+	now = chrono_lap(&philo->config->t);
+	if (now - philo->last_meal > philo->config->time_to_die)
+	{
+		print_action(philo, "died");
+		philo->config->ok = 0;
+		return (0); 
+	}
+	return (1);
 }
