@@ -6,7 +6,7 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 20:10:08 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/09/23 21:31:02 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/09/24 14:37:00 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,18 +72,17 @@ int	valid_args(int argc, char **argv)
 	return (1);
 }
 
-void	select_forks(t_philo *philo, int *first, int *second)
+void	cleanup_and_exit(t_config *c)
 {
-	int	left;
-	int	right;
+	int	i;
 
-	left = philo->left_fork;
-	right = philo->right_fork;
-	*first = left;
-	*second = right;
-	if (*first > *second)
+	i = 0;
+	while (i < c->num_of_philosophers)
 	{
-		*first = right;
-		*second = left;
+		pthread_mutex_destroy(&c->forks[i]);
+		i++;
 	}
+	pthread_mutex_destroy(&c->print_lock);
+	pthread_mutex_destroy(&c->meals_lock);
+	return ;
 }
