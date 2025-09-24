@@ -6,7 +6,7 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 21:11:14 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/09/24 16:43:36 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/09/24 16:45:48 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ int	are_meals_complete(t_philo *philo)
 	int	n_compl_meals;
 	int	n_philo;
 
-	
 	n_philo = philo->config->num_of_philosophers;
 	if (philo->config->min_num_of_meals == 0)
 		return (0);
