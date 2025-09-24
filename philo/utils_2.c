@@ -6,7 +6,7 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 21:11:14 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/09/24 14:48:31 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/09/24 16:43:36 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,14 @@ int	try_eat(t_philo *philo)
 {
 	int	first;
 	int	second;
+	int	should_eat;
 
-	if (!is_alive(philo) || philo->finished_meals)
+	pthread_mutex_lock(&philo->config->meals_lock);
+	should_eat = !philo->finished_meals;
+	pthread_mutex_unlock(&philo->config->meals_lock);
+	if (!should_eat)
+		return (0);
+	if (!is_alive(philo))
 	{
 		philo->config->ok = 0;
 		return (0);
@@ -80,7 +86,7 @@ int	are_meals_complete(t_philo *philo)
 	int	n_compl_meals;
 	int	n_philo;
 
-	n_compl_meals = philo->config->num_complete_meals;
+	
 	n_philo = philo->config->num_of_philosophers;
 	if (philo->config->min_num_of_meals == 0)
 		return (0);
@@ -91,6 +97,7 @@ int	are_meals_complete(t_philo *philo)
 		philo->finished_meals = 1;
 		philo->config->num_complete_meals++;
 	}
+	n_compl_meals = philo->config->num_complete_meals;
 	all_satiated = (n_compl_meals == n_philo);
 	pthread_mutex_unlock(&philo->config->meals_lock);
 	return (all_satiated);
