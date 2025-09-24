@@ -6,7 +6,7 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 21:11:14 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/09/24 14:36:49 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/09/24 14:48:31 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	try_eat(t_philo *philo)
 	int	first;
 	int	second;
 
-	if (!is_alive(philo))
+	if (!is_alive(philo) || philo->finished_meals)
 	{
 		philo->config->ok = 0;
 		return (0);
