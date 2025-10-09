@@ -6,7 +6,7 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 21:11:14 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/09/24 16:45:48 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/10/09 14:24:46 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ void	select_forks(t_philo *philo, int *first, int *second)
 
 int	lock_forks_and_count(t_philo *philo, int first, int second)
 {
-	if (pthread_mutex_trylock(&philo->config->forks[first]) != 0)
+	if (pthread_mutex_lock(&philo->config->forks[first]) != 0)
 		return (0);
 	print_action(philo, "has taken a fork");
-	if (pthread_mutex_trylock(&philo->config->forks[second]) != 0)
+	if (pthread_mutex_lock(&philo->config->forks[second]) != 0)
 	{
 		pthread_mutex_unlock(&philo->config->forks[first]);
 		return (0);
