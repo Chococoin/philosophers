@@ -49,12 +49,21 @@ int	lock_forks_and_count(t_philo *philo, int first, int second)
 int	is_alive(t_philo *philo)
 {
 	double	now;
+	int		should_report;
 
 	now = chrono_lap(&philo->config->t);
 	if (now - philo->last_meal > philo->config->time_to_die)
 	{
-		print_action(philo, "died");
-		philo->config->ok = 0;
+		should_report = 0;
+		pthread_mutex_lock(&philo->config->state_lock);
+		if (philo->config->ok)
+		{
+			philo->config->ok = 0;
+			should_report = 1;
+		}
+		pthread_mutex_unlock(&philo->config->state_lock);
+		if (should_report)
+			print_action(philo, "died");
 		return (0);
 	}
 	return (1);
@@ -65,17 +74,20 @@ int	try_eat(t_philo *philo)
 	int	first;
 	int	second;
 	int	should_eat;
+	int	sim_running;
 
 	pthread_mutex_lock(&philo->config->meals_lock);
 	should_eat = !philo->finished_meals;
 	pthread_mutex_unlock(&philo->config->meals_lock);
 	if (!should_eat)
 		return (0);
-	if (!is_alive(philo))
-	{
-		philo->config->ok = 0;
+	pthread_mutex_lock(&philo->config->state_lock);
+	sim_running = philo->config->ok;
+	pthread_mutex_unlock(&philo->config->state_lock);
+	if (!sim_running)
 		return (0);
-	}
+	if (!is_alive(philo))
+		return (0);
 	select_forks(philo, &first, &second);
 	return (lock_forks_and_count(philo, first, second));
 }

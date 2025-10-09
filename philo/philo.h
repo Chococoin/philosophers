@@ -38,6 +38,7 @@ typedef struct s_config
 	pthread_mutex_t	forks[200];
 	pthread_mutex_t	print_lock;
 	pthread_mutex_t	meals_lock;
+	pthread_mutex_t	state_lock;
 }	t_config;
 
 typedef struct s_philo

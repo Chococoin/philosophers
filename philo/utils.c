@@ -84,5 +84,6 @@ void	cleanup_and_exit(t_config *c)
 	}
 	pthread_mutex_destroy(&c->print_lock);
 	pthread_mutex_destroy(&c->meals_lock);
+	pthread_mutex_destroy(&c->state_lock);
 	return ;
 }

@@ -33,6 +33,7 @@ void	init_config(t_config *config, char **argv)
 	}
 	pthread_mutex_init(&config->print_lock, NULL);
 	pthread_mutex_init(&config->meals_lock, NULL);
+	pthread_mutex_init(&config->state_lock, NULL);
 }
 
 void	print_action(t_philo *philo, char *action)

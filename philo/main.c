@@ -17,8 +17,17 @@ void	*philosophers_life(void *args)
 	t_philo	*philo;
 
 	philo = (t_philo *)args;
-	while (philo->config->ok && !are_meals_complete(philo))
+	while (1)
 	{
+		pthread_mutex_lock(&philo->config->state_lock);
+		if (!philo->config->ok)
+		{
+			pthread_mutex_unlock(&philo->config->state_lock);
+			break ;
+		}
+		pthread_mutex_unlock(&philo->config->state_lock);
+		if (are_meals_complete(philo))
+			break ;
 		if (try_eat(philo))
 		{
 			print_action(philo, "is eating");
