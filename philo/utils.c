@@ -6,7 +6,7 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 20:10:08 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/09/24 14:37:00 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/10/09 15:45:19 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ int	valid_args(int argc, char **argv)
 		return (0);
 	}
 	n_phils = ft_atoi(argv[1]);
-	if (n_phils <= 1 || n_phils > 200)
+	if (n_phils < 1 || n_phils > 200)
 	{
-		printf("Number of philosophers must be in a range of 2-200\n");
+		printf("Number of philosophers must be in a range of 1-200\n");
 		return (0);
 	}
 	return (1);

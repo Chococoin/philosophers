@@ -6,11 +6,22 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 17:28:08 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/09/23 21:27:38 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/10/22 12:51:46 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	start_meal(t_philo	*philo)
+{
+	print_action(philo, "is eating");
+	philo->last_meal = chrono_lap(&philo->config->t);
+	usleep(philo->config->time_to_eat * 1000);
+	print_action(philo, "is sleeping");
+	usleep(philo->config->time_to_sleep * 1000);
+	print_action(philo, "is thinking");
+	return ;
+}
 
 void	*philosophers_life(void *args)
 {
@@ -29,14 +40,7 @@ void	*philosophers_life(void *args)
 		if (are_meals_complete(philo))
 			break ;
 		if (try_eat(philo))
-		{
-			print_action(philo, "is eating");
-			philo->last_meal = chrono_lap(&philo->config->t);
-			usleep(philo->config->time_to_eat * 1000);
-			print_action(philo, "is sleeping");
-			usleep(philo->config->time_to_sleep * 1000);
-			print_action(philo, "is thinking");
-		}
+			start_meal(philo);
 		else
 			usleep(100);
 	}
