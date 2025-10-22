@@ -6,7 +6,7 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 21:25:45 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/09/23 21:27:14 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/10/22 13:50:49 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,55 @@ void	print_action(t_philo *philo, char *action)
 	timestamp = chrono_lap(&philo->config->t);
 	printf("%.3f %d %s\n", timestamp, philo->id, action);
 	pthread_mutex_unlock(&philo->config->print_lock);
+}
+
+int	check_philosopher_death(t_config *config, int i)
+{
+	double	now;
+
+	now = chrono_lap(&config->t);
+	pthread_mutex_lock(&config->meals_lock);
+	if (now - config->philosophers[i].last_meal > config->time_to_die)
+	{
+		pthread_mutex_unlock(&config->meals_lock);
+		pthread_mutex_lock(&config->state_lock);
+		if (config->ok)
+		{
+			config->ok = 0;
+			pthread_mutex_unlock(&config->state_lock);
+			print_action(&config->philosophers[i], "died");
+			return (1);
+		}
+		pthread_mutex_unlock(&config->state_lock);
+		return (1);
+	}
+	pthread_mutex_unlock(&config->meals_lock);
+	return (0);
+}
+
+void	*monitor_philosophers(void *args)
+{
+	t_config	*config;
+	int			i;
+
+	config = (t_config *)args;
+	while (1)
+	{
+		pthread_mutex_lock(&config->state_lock);
+		if (!config->ok)
+		{
+			pthread_mutex_unlock(&config->state_lock);
+			break ;
+		}
+		pthread_mutex_unlock(&config->state_lock);
+		i = 0;
+		while (i < config->num_of_philosophers)
+		{
+			if (check_philosopher_death(config, i))
+				return (NULL);
+			i++;
+		}
+		usleep(100);
+	}
+	return (NULL);
 }

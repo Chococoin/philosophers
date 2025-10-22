@@ -6,7 +6,7 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 14:50:21 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/09/23 21:38:15 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/10/22 13:51:30 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ typedef struct s_config
 	int				num_complete_meals;
 	int				ok;
 	t_timeval		t;
+	pthread_t		monitor_thread;
+	struct s_philo	*philosophers;
 	pthread_mutex_t	forks[200];
 	pthread_mutex_t	print_lock;
 	pthread_mutex_t	meals_lock;
@@ -65,5 +67,7 @@ int			are_meals_complete(t_philo *philo);
 void		cleanup_and_exit(t_config *c);
 void		select_forks(t_philo *philo, int *first, int *second);
 int			lock_forks_and_count(t_philo *philo, int first, int second);
+int			check_philosopher_death(t_config *config, int i);
+void		*monitor_philosophers(void *args);
 
 #endif

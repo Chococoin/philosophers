@@ -6,7 +6,7 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 21:11:14 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/10/09 14:24:46 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/10/22 14:03:24 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,15 @@ void	select_forks(t_philo *philo, int *first, int *second)
 
 int	lock_forks_and_count(t_philo *philo, int first, int second)
 {
+	if (philo->config->num_of_philosophers == 1)
+	{
+		if (pthread_mutex_lock(&philo->config->forks[first]) != 0)
+			return (0);
+		print_action(philo, "has taken a fork");
+		usleep(philo->config->time_to_die * 1000);
+		pthread_mutex_unlock(&philo->config->forks[first]);
+		return (0);
+	}
 	if (pthread_mutex_lock(&philo->config->forks[first]) != 0)
 		return (0);
 	print_action(philo, "has taken a fork");
@@ -85,8 +94,6 @@ int	try_eat(t_philo *philo)
 	sim_running = philo->config->ok;
 	pthread_mutex_unlock(&philo->config->state_lock);
 	if (!sim_running)
-		return (0);
-	if (!is_alive(philo))
 		return (0);
 	select_forks(philo, &first, &second);
 	return (lock_forks_and_count(philo, first, second));
