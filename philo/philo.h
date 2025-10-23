@@ -6,7 +6,7 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 14:50:21 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/10/22 13:51:30 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/10/22 15:37:19 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_config
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
+	int				time_to_think;
 	int				min_num_of_meals;
 	int				num_complete_meals;
 	int				ok;
