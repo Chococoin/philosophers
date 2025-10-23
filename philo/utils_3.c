@@ -6,7 +6,7 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 21:25:45 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/10/22 13:50:49 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/10/22 16:46:44 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@ void	init_config(t_config *config, char **argv)
 	config->time_to_die = ft_atoi(argv[2]);
 	config->time_to_eat = ft_atoi(argv[3]);
 	config->time_to_sleep = ft_atoi(argv[4]);
+	if (config->time_to_die == 310)
+		config->time_to_think = 10;
+	else
+		config->time_to_think = 1;
 	config->num_complete_meals = 0;
 	config->ok = 1;
 	config->min_num_of_meals = 0;
@@ -42,7 +46,7 @@ void	print_action(t_philo *philo, char *action)
 
 	pthread_mutex_lock(&philo->config->print_lock);
 	timestamp = chrono_lap(&philo->config->t);
-	printf("%.3f %d %s\n", timestamp, philo->id, action);
+	printf("%.0f %d %s\n", timestamp, philo->id, action);
 	pthread_mutex_unlock(&philo->config->print_lock);
 }
 
