@@ -6,7 +6,7 @@
 /*   By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 17:28:08 by glugo-mu          #+#    #+#             */
-/*   Updated: 2025/10/22 13:52:54 by glugo-mu         ###   ########.fr       */
+/*   Updated: 2025/10/22 15:36:53 by glugo-mu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	start_routine(t_philo	*philo)
 	print_action(philo, "is sleeping");
 	usleep(philo->config->time_to_sleep * 1000);
 	print_action(philo, "is thinking");
+	usleep(philo->config->time_to_think * 1000);
 	return ;
 }
 
