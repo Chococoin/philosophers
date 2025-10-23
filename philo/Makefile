@@ -6,13 +6,14 @@
 #    By: glugo-mu <glugo-mu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/01 17:26:30 by glugo-mu          #+#    #+#              #
-#    Updated: 2025/10/09 14:22:50 by glugo-mu         ###   ########.fr        #
+#    Updated: 2025/10/23 10:17:04 by glugo-mu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
 NAME = philo
 SRC = main.c utils.c utils_2.c utils_3.c
+CFLAGS = -Werror -Wall -Wextra -g
 
 all: $(NAME)
 
